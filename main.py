@@ -20,7 +20,16 @@ with open("orcids.txt", "r") as file:
 with open("output.csv", mode="w") as file:
     writer = csv.writer(file)
     writer.writerow(
-        ["ORCID", "Name", "Title", "Type", "Publication Date", "Contributors", "URL"]
+        [
+            "ORCID",
+            "Name",
+            "Title",
+            "Type",
+            "Publication Date",
+            "Contributors",
+            "URL",
+            "Journal",
+        ]
     )
     access_token = services.get_access_token(ORCID_CLIENT_ID, ORCID_CLIENT_SECRET)
     for orcid_id in orcids:
@@ -47,6 +56,7 @@ with open("output.csv", mode="w") as file:
                         work_data["publication_date"],
                         work_data["contributors"],
                         work_data["url"],
+                        work_data["journal"],
                     ]
                 )
         print("done for", orcid_id)

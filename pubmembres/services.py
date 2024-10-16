@@ -77,8 +77,7 @@ def get_orcid_works(orcid_id, access_token):
     return result
 
 
-def extract_work_data(put_code, orcid_id, access_token):
-
+def _extract_raw_work_data(put_code, orcid_id, access_token):
     response = requests.get(
         f"{BASE_PUBLIC_API_URL}{orcid_id}/work/{put_code}",
         headers={
@@ -92,6 +91,13 @@ def extract_work_data(put_code, orcid_id, access_token):
             f"Failed to get ORCID work, error code was {response.status_code}"
         )
 
+    return response
+
+
+def extract_work_data(put_code, orcid_id, access_token):
+
+    response = _extract_raw_work_data(put_code, orcid_id, access_token)
+
     contributors = []
     try:
         for contributor in response.json()["contributors"]["contributor"]:
@@ -104,12 +110,19 @@ def extract_work_data(put_code, orcid_id, access_token):
         url = response.json()["url"]["value"]
     except TypeError:
         url = ""
+
+    try:
+        journal = response.json()["journal-title"]["value"]
+    except TypeError:
+        journal = ""
+
     result = {
         "title": response.json()["title"]["title"]["value"],
         "type": response.json()["type"],
         "publication_date": response.json()["publication-date"]["year"]["value"],
         "contributors": contributors,
         "url": url,
+        "journal": journal,
     }
 
     return result
