@@ -40,8 +40,11 @@ with open("output.csv", mode="w") as file:
             name,
         )
         works = services.get_orcid_works(orcid_id, access_token)
+        work_count = 0
+        out_of_range_work_count = 0
         for work in works:
             if work["year"] in YEARS:
+                work_count += 1
                 work_data = services.extract_work_data(
                     work["put_code"], orcid_id, access_token
                 )
@@ -59,4 +62,7 @@ with open("output.csv", mode="w") as file:
                         work_data["journal"],
                     ]
                 )
-        print("done for", orcid_id)
+            else:
+                out_of_range_work_count += 1
+        print("work count", work_count)
+        print("out of range work count", out_of_range_work_count)
