@@ -1,6 +1,9 @@
 orcids.txt
 output.csv
 code.sparql
+zenodo_output.csv
+zenodo_records_raw.json
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
