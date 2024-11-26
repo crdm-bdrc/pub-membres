@@ -1,5 +1,6 @@
 orcids.txt
 output.csv
+code.sparql
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
